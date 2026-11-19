@@ -11,6 +11,7 @@ const counter = document.getElementById("counter");
 const emptyState = document.getElementById("emptyState");
 const statusMessage = document.getElementById("statusMessage");
 const clearAllBtn = document.getElementById("clearAllBtn");
+const clearDoneBtn = document.getElementById("clearDoneBtn");
 const sortBtn = document.getElementById("sortBtn");
 const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
 
@@ -212,6 +213,12 @@ function sortTasks() {
   renderTasks();
 }
 
+function clearDone() {
+  tasks = tasks.filter(task => !task.done);
+  saveTasks();
+  renderTasks();
+}
+
 taskForm.addEventListener("submit", event => {
   event.preventDefault();
   addTask(taskInput.value);
@@ -230,6 +237,7 @@ for (const button of filterButtons) {
 }
 
 sortBtn.addEventListener("click", sortTasks);
+clearDoneBtn.addEventListener("click", clearDone);
 clearAllBtn.addEventListener("click", () => {
   tasks = [];
   try {
