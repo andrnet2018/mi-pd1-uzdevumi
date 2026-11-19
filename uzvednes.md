@@ -65,3 +65,40 @@ Salīdzini gatavo projektu ar video ekrānā redzamo uzvedni. Izlabo precīzos e
 10. Console nav JavaScript kļūdu.
 
 **Svarīgi:** Šis ir pēc video pārskatīšanas precizēts darba formulējums. Tas neaizstāj pasniedzēja oriģinālo uzdevuma 3. nodaļu vai oriģinālo darba lapu.
+
+---
+
+# PD2 — trīs jauni atkārtoti izmantojami šabloni
+
+**Avots:** PD2 video un SRT (19.11.2026). Šie ir pielāgoti praktiski šabloni, nevis burtiski no ekrāna pārrakstītas MI sarunas.
+
+## PD2-A — minimālais konteksts jaunai funkcijai
+
+> Tu esi JavaScript izstrādātājs. Lietotne ir aprakstīta zemāk failā `PROJECT.md`.
+> Pieprasījums: pievieno uzdevumu termiņu `due` (`YYYY-MM-DD` vai `null`).
+> Atgriez tikai izmainītos koda fragmentus: `index.html` datuma lauku, `addTask`, rindu attēlošanas funkcijas un datumu palīgfunkcijas. Vecie PD1 uzdevumi bez `due` jāattēlo korekti. Nokavēts ir tikai neizpildīts uzdevums ar termiņu pirms šodienas; rādīt `Nokavēts` un DD.MM.GGGG. Neizmantot bibliotēkas. Pēc izmaiņām nosauc pārbaudes.
+>
+> [Ievieto `PROJECT.md`, un nepieciešamās faktiskās funkcijas no `app.js`.]
+
+## PD2-B — skice kā ievade
+
+> Izveido statistikas paneli pēc pievienotās `skice.jpg` un `PROJECT.md`.
+> Trīs kartītes: Kopā, Izpildīti, Nokavēti. Apakšā zaļa progresa josla un izpildes procents. Atgriez atsevišķi HTML, CSS, funkciju `renderStats` un tās izsaukuma vietu. Tukšam sarakstam parādi 0 un 0%, ne `NaN`. Pārrēķini pēc katras pievienošanas, atzīmēšanas vai dzēšanas. Nokavējumu nosaka tikai neizpildītajiem.
+>
+> [Pievieno `skice.jpg`, `PROJECT.md` un aktuālo `renderTasks`/`render` kodu.]
+
+## PD2-C — jauna saruna tikai ar konteksta failu
+
+> Tu saņem tikai projekta aprakstu `PROJECT.md`, bez pirmkoda. Pievieno darbību `clearDone`: poga **Dzēst izpildītos** izdzēš tikai uzdevumus ar `done === true`, saglabā `localStorage` un pārzīmē sarakstu un statistiku. Izmanto tikai `PROJECT.md` norādītās esošās funkcijas. Atgriez `clearDone`, pogas HTML un notikuma klausītāju. Nosauc testu ar diviem izpildītiem un diviem aktīviem uzdevumiem, tai skaitā pēc pārlādes.
+>
+> [Ievieto aktuālo `PROJECT.md`.]
+
+## A–Z salīdzinājuma vienādā uzvedne abiem modeļiem
+
+> Lūdzu, pēc `PROJECT.md` un esošajām `renderTasks`/`saveTasks` funkcijām izveido A–Z kārtošanu latviešu alfabēta secībā. Testa dati: `Zemene, Ābols, Čipsi, Cukurs, Šķiņķis, Siers`. Gaidāmais: `Ābols, Cukurs, Čipsi, Siers, Šķiņķis, Zemene`. Kārtojumam jāsaglabājas pēc lapas pārlādes. Maini tikai nepieciešamo kodu un pievieno pogu.
+
+**Korekcijas uzvedne pēc neveiksmīga testa:**
+
+> Ievade: `Zemene, Ābols, Čipsi, Cukurs, Šķiņķis, Siers`. Gaidītā latviešu secība: `Ābols, Cukurs, Čipsi, Siers, Šķiņķis, Zemene`. Faktiski: diakritiskie vārdi nokļūst citā vietā, jo izmantots Unicode rakstzīmju salīdzinājums. Izlabo tikai salīdzināšanas loģiku, izmantojot `localeCompare` ar lokalizāciju `lv`; pēc tam saglabā sarakstu.
+
+**Godprātīga piezīme par eksperimentu:** `kartosana-claude` nosaukums šajā sagatavotajā repozitorijā ir **demonstrācijas zara nosaukums**, ne pierādījums faktiskai Claude izpildei. Lai T4 būtu patiess divu MI modeļu salīdzinājums, šī pati uzvedne jāizpilda arī Claude vidē un rezultāti jāpiefiksē atsevišķi.

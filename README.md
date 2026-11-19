@@ -1,86 +1,54 @@
-# Mani uzdevumi — PD1
+# Mani uzdevumi — PD1 + PD2
 
-**PD1 — Pirmā strādājošā lietotne ar MI.** Neliela uzdevumu saraksta lietotne latviešu valodā, kas darbojas tieši pārlūkā, bez servera, instalēšanas vai interneta.
+**PD2 — Lietotnes paplašināšana ar MI.** Turpina PD1 projektu, nemainot tā glabāšanas atslēgu. Lietotne ir statiska: HTML, CSS un JavaScript, bez servera un ārējām pakotnēm.
 
-## Palaišana
+## Kā atvērt
 
-1. Lejupielādē projekta failus vienā mapē.
-2. **Veic dubultklikšķi uz `index.html`** (Chrome, Edge vai Firefox).
-3. Pievieno un pārvaldi uzdevumus. Lai apskatītu konsoli, nospied **F12 → Console**.
-4. Pārbaudi saglabāšanu: izveido trīs uzdevumus, vienu atzīmē izpildītu un pārlādē ar **F5**.
+Atver `index.html` pārlūkā (Chrome/Edge/Firefox), vai pēc publicēšanas GitHub Pages. Lai testētu ar saviem datiem, iepriekšējie PD1 uzdevumi glabājas `localStorage` atslēgā `pd1-uzdevumi`. **Nepārbaudi dzēšanas pogas ar vienīgajiem svarīgajiem datiem bez rezerves kopijas.**
 
-Nav nepieciešams Live Server, Python serveris, `npm install` vai ārēji JavaScript pakotņu avoti.
+## Jaunās PD2 funkcijas
 
-## Funkcijas
+1. **Termiņš:** datuma ievade pēc izvēles; uzdevumu rindās termiņš redzams `DD.MM.GGGG`. Neizpildīts uzdevums ar pagājušu termiņu tiek izcelts sarkani un apzīmēts „Nokavēts”. Izpildītajiem uzdevumiem brīdinājums pazūd. Veci PD1 ieraksti bez `due` tiek atbalstīti.
+2. **Statistika:** Kopā, Izpildīti, Nokavēti, kā arī izpildes progresa josla procentos. Tukšam sarakstam 0%, nekad `NaN`.
+3. **Kārtot A–Z:** funkcija `sortTasks()` izmanto `localeCompare` ar `lv`; kārto sarakstu un saglabā kārtību. Piemērs: `Ābols, Cukurs, Čipsi, Siers, Šķiņķis, Zemene`.
+4. **Dzēst izpildītos:** funkcija `clearDone()` saglabā tikai aktīvos, atjauno skaitītāju un statistiku, izmaiņas saglabājas pēc pārlādes.
 
-- Uzdevuma pievienošana ar pogu **Pievienot** vai **Enter**; `trim()` ignorē tukšas ievades un noņem liekās atstarpes sākumā un beigās.
-- Atzīmēšana kā izpildīts, atzīmes noņemšana un atsevišķa uzdevuma dzēšana.
-- Filtri **Visi / Aktīvie / Izpildītie** ar aktīvās pogas vizuālu izcēlumu.
-- Atlikušo neizpildīto uzdevumu skaits.
-- Datu glabāšana tikai lokāli pārlūka `localStorage` ar atslēgu `pd1-uzdevumi`.
-- **Papildfunkcija A — rediģēšana:** dubultklikšķis uz uzdevuma teksta, **Enter** saglabā, **Escape** atceļ; klikšķis ārpus ievades atceļ.
-- Poga **Notīrīt visu** saraksta atiestatīšanai.
-- Droša HTML ievade: lietotāja teksts tiek attēlots ar `textContent`, nevis izpildīts kā HTML.
+PD1 uzdevuma pievienošana, dzēšana, filtrēšana, rediģēšana ar Enter/Escape un `Notīrīt visu` ir saglabāta. Rediģēšanas dubultā `blur` pārzīmēšana papildus izlabota.
 
-## Projekta struktūra — pieci faili
+## Faili
 
 | Fails | Saturs |
-|---|---|
-| `index.html` | Lietotnes HTML struktūra |
-| `style.css` | Noformējums un pielāgošanās šauriem ekrāniem |
-| `app.js` | Funkcijas, filtrēšana, rediģēšana, saglabāšana |
-| `uzvednes.md` | MI dotais uzdevums un pieņemšanas kritēriji |
-| `README.md` | Šī dokumentācija |
+| --- | --- |
+| `index.html` | Forma, termiņš, statistikas panelis, vadības pogas |
+| `style.css` | Noformējums un nokavējuma stāvoklis |
+| `app.js` | Datu glabāšana, UI un visas PD1/PD2 funkcijas |
+| `PROJECT.md` | Precīza projekta konteksta specifikācija un 20 funkciju saraksts |
+| `skice.jpg` | Digitāla skice no PD2 video parauga, ne fotografēta personīga skice |
+| `uzvednes.md` | PD1 uzvednes, 3 PD2 uzvedņu šabloni, A–Z salīdzinājuma uzvedne |
+| `README.md` | Šis apraksts |
 
-Datu masīva objekta forma: `{ id: number, text: string, done: boolean }`. Identifikators tiek veidots ar `Date.now()` un dublikātu pārbaudi.
+Datu struktūra: `{ id: number, text: string, done: boolean, due?: string | null }`. Formāts `YYYY-MM-DD` glabāšanai, `DD.MM.GGGG` attēlošanai.
 
-Elementu ID: `task-input`, `add-btn`, `task-list`, `counter`, `clearAllBtn`. Filtru pogām `data-filter="all|active|completed"`.
+## Automātiskie testi
 
-## MI izmantošana un izstrādes posmi
+**21/21 PASS** Chromium pārlūka DOM vidē: tukšs saraksts un `NaN`, vecs PD1 uzdevums, uzdevumi bez/ ar termiņu, nokavējuma stāvoklis, izpildīts nokavējums, statistikas procenti, dzēšanas pārrēķins, latviešu A–Z un saglabāšanās, `clearDone` pēc pārlādes, rediģēšana Enter/Escape, filtri, tukša ievade, HTML teksta drošība, ID dublikāta novēršana un bez nekontrolētām JS kļūdām.
 
-**Rīks:** ChatGPT, **modelis:** GPT-6. Sākotnējā un turpmākās darba uzvednes/apraksti ir failā `uzvednes.md`; tie ir fiksēti pēc darba gaitas un MP4 demonstrācijas, nevis uzdoti pedagoga oriģinālā teksta atstāsti.
+**Testēšanas ierobežojums:** šajā izolētajā vidē tieša lokālā `file://`/HTTP adrešu atvēršana ir bloķēta. Tāpēc testēts faktiskais JS reālā Chromium DOM ar `localStorage` aizstājēju un simulētu pārlādi. **Pirms nodošanas** pārbaudi savā Chrome pārlūkā `F5`, `F12 → Console` un `Application → Local Storage`.
 
-Git vēsturē saglabāti sākotnējie seši posmi un atsevišķs labojumu komits pēc MP4 demonstrācijas salīdzinājuma:
+## Darba secība un Git zari
 
-1. Projekta izveide.
-2. Sākotnējā lietotnes versija.
-3. Sākotnējās pārbaudes un defekta fiksēšana: 9 PASS, 1 FAIL.
-4. `Labots`: tukšu/atstarpju ievades kļūdas novēršana (`trim()`).
-5. Rediģēšana ar Enter / Escape.
-6. Sākotnējā dokumentācija.
-7. Pēc video apskates: ID, glabāšanas atslēga, datu lauks `done`, unikāls ID un dokumentācija.
+- `main` — pilnībā strādājošais variants ar PD2 papildinājumiem.
+- `kartosana-claude` — korektas A–Z kārtošanas **demonstrācijas** zars.
+- `kartosana-chatgpt` — kļūdains salīdzinājums pēc rakstzīmju kodiem un atsevišķs labojuma komits ar `localeCompare`.
 
-## Pārbaudes
+**Būtiska godprātības piezīme:** šie abi koda varianti tika sagatavoti ChatGPT vidē, nevis neatkarīgi ģenerēti divos modeļos. Faktisku Claude vs ChatGPT eksperimentu neuzrādi kā pabeigtu, kamēr neesi palaidis to pašu uzvedni Claude un salīdzinājis atbildi.
 
-Video aprakstītas desmit pamatpārbaudes. Sākotnējā versijā 3. pārbaude neizdevās: trīs atstarpes izveidoja tukšu uzdevumu. Pēc `addTask()` labošanas automatizētā pārbaude dod **10/10 PASS**; papildfunkcijas scenārijs arī **PASS**.
+## Droša ievietošana esošajā GitHub repozitorijā
 
-**Pārbaudes metodes ierobežojums:** automātiskajā vidē Chromium pārlūka navigācija uz `file://` un `localhost` tika bloķēta. Tāpēc lietotnes HTML, CSS un JavaScript pārbaudīts reālā Chromium DOM ar `localStorage` aizstājēju, nevis tieši atverot `index.html` no diska. Saglabāšanās pārbaude simulē dokumenta pārlādi. Pirms iesniegšanas nepieciešama manuāla pārbaude savā pārlūkā, īpaši **F5** un **F12 → Console**. Visi faili izmanto relatīvas atsauces, nav tīkla pieprasījumu un nav servera atkarību.
+Video paredz paplašināt **esošo** repozitoriju `andrnet2018/mi-pd1-uzdevumi`. Tāpēc nenomaini esošās lokālās `.git` mapes saturu. Pievienotajā `PD2_Git_vesture.bundle` ir sagatavotā Git vēsture un visi trīs zari; to vēlāk var importēt esošajā lokālajā klonā. Precīzās komandas sniegsim pēc tam, kad pārbaudīsi, vai lokālā `main` zarā nav nepublicētu izmaiņu.
 
-Detalizētie rezultāti un T1–T4 tabulu **neoriģināls darba lapas projekts** ir atsevišķā PDF, kas paredzēts precizēšanai pēc pedagoga darba lapas.
+Parastai koda apskatei var izmantot arī ZIP **bez `.git` mapes**. `PROJECT.md`, `skice.jpg` un PDF darba lapa nav jāievieto Moodle citādi, kā norāda pasniedzējs; video prasa PDF Moodle iesniegšanai, bet `PROJECT.md` un `skice.jpg` — GitHub repozitorijā.
 
-## Publicēšana GitHub
+## Avots
 
-Ja projekts iegūts arhīvā **ar `.git` mapi**, komitu vēsture jau ir saglabāta. GitHub izveido **tukšu** repozitoriju ar nosaukumu `mi-pd1-uzdevumi` (*neatzīmē* “Add README”, jo šis projekts jau satur README un Git vēsturi). PowerShell:
-
-```powershell
-cd "$env:USERPROFILE\Documents\GitHub\mi-pd1-uzdevumi"
-git log --oneline
-git remote add origin https://github.com/TAVS-LIETOTAJS/mi-pd1-uzdevumi.git
-git push -u origin main
-```
-
-Aizvieto `TAVS-LIETOTAJS` ar savu GitHub lietotājvārdu. Ja remote `origin` jau eksistē, tā vietā izmanto `git remote set-url origin ...`.
-
-**Piezīme par komitu autoru:** piemēra vēsture sagatavota ar tehnisku autoru `PD1 kursa paraugs <pd1-paraugs@example.invalid>`, nevis tavu GitHub identitāti. Ja iesniegšanas prasības paredz personīgu komitu autorību, tā pirms publicēšanas jāpielāgo. Jauniem komitiem iestati savu `git config user.name` un `git config user.email`.
-
-## Avots un robežas
-
-Uzdevums veidots pēc video “PD1 Pirmā strādājošā lietotne ar MI — demonstrācija soli pa solim” transkripcijas, https://www.youtube.com/watch?v=k70oa9Ivii0 (saņemta 2026-11-19). Pilnais MP4 (6:39) vēlāk tika pārskatīts. Redzamajā uzvednē 1:20–1:30 ir precīzi elementu ID, atslēga, datu struktūra, ID un funkciju apjoma ierobežojums; projekts tam pielāgots. Oriģinālā 3. nodaļa un pati pedagoga T1–T4 veidlapa joprojām nav pievienota. Video attēlā redzamā darba lapas forma ir tikai orientieris.
-
-## Precizējumi pēc video apskates (19.11.2026)
-
-- No MP4 apstiprināti precīzi ID: `task-input`, `add-btn`, `task-list`, `counter`.
-- Glabāšanas atslēga ir `pd1-uzdevumi`, uzdevuma statuss ir `done`, bet `id` ir skaitlis ar dublikātu pārbaudi.
-- Visas deklarētās JavaScript funkcijas ir īsākas par 30 koda rindām.
-- Uzdevumu notīrīšanas poga izdzēš arī `pd1-uzdevumi` atslēgu.
-- Vizuālais noformējums atšķiras no pedagoga demonstrācijas, taču lietotnes obligātās funkcijas ir tās pašas.
+PD2 video „Lietotnes paplašināšana ar MI – konteksts, skice un Claude pret ChatGPT” un lietotāja pievienotā SRT transkripcija (2026-11-19). T1–T5 tabulas un video demonstrācijā minētie tokenu skaitļi raksturo demonstrāciju, ne garantēti mūsu avota failu precīzu tokenizāciju.
