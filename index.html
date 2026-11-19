@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Mani uzdevumi — PD1</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <p class="eyebrow">PD1 · Pirmā lietotne ar MI</p>
+      <h1>Mani uzdevumi</h1>
+      <p class="intro">Pieraksti ieceres, atzīmē paveikto un turpini arī bez interneta.</p>
+    </header>
+
+    <section class="task-panel" aria-label="Uzdevumu pārvaldība">
+      <form id="taskForm" class="add-form" novalidate>
+        <label for="taskInput">Jauns uzdevums</label>
+        <div class="input-row">
+          <input id="taskInput" name="task" type="text" autocomplete="off" maxlength="200" placeholder="Piemēram, nopirkt pienu">
+          <button id="addBtn" class="button primary" type="submit">Pievienot</button>
+        </div>
+        <p class="input-hint">Pievieno ar Enter. Rediģē uzdevumu ar dubultklikšķi.</p>
+      </form>
+
+      <div class="toolbar">
+        <p class="counter"><strong id="remainingCount" aria-live="polite">0</strong> neizpildīti uzdevumi</p>
+        <button id="clearAllBtn" class="button subtle" type="button">Notīrīt visu</button>
+      </div>
+
+      <div class="filters" role="group" aria-label="Uzdevumu filtri">
+        <button class="filter is-active" data-filter="all" type="button" aria-pressed="true">Visi</button>
+        <button class="filter" data-filter="active" type="button" aria-pressed="false">Aktīvie</button>
+        <button class="filter" data-filter="completed" type="button" aria-pressed="false">Izpildītie</button>
+      </div>
+
+      <ul id="taskList" class="task-list" aria-label="Uzdevumi"></ul>
+      <p id="emptyState" class="empty-state">Pagaidām nav uzdevumu. Pievieno pirmo!</p>
+      <p id="statusMessage" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+    <footer class="footer">Viss saglabājas tikai tavā pārlūkā (localStorage).</footer>
+  </main>
+</body>
+</html>
