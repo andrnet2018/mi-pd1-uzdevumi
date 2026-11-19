@@ -179,6 +179,20 @@ function createTaskContent(task) {
   return content;
 }
 
+function renderStats() {
+  const total = tasks.length;
+  const done = tasks.filter(task => task.done).length;
+  const overdue = tasks.filter(isOverdue).length;
+  const percent = total ? Math.round(done / total * 100) : 0;
+  document.getElementById("statsTotal").textContent = String(total);
+  document.getElementById("statsDone").textContent = String(done);
+  document.getElementById("statsOverdue").textContent = String(overdue);
+  document.getElementById("progressValue").textContent = `${percent}%`;
+  const progress = document.getElementById("progressBar");
+  progress.style.width = `${percent}%`;
+  progress.setAttribute("aria-valuenow", String(percent));
+}
+
 function renderTasks() {
   taskList.replaceChildren();
   const visible = getVisibleTasks();
@@ -188,6 +202,7 @@ function renderTasks() {
   emptyState.textContent = tasks.length === 0
     ? "Pagaidām nav uzdevumu. Pievieno pirmo!"
     : "Šajā filtrā nav uzdevumu.";
+  renderStats();
 }
 
 taskForm.addEventListener("submit", event => {

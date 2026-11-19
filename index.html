@@ -28,6 +28,19 @@
         <p class="input-hint">Pievieno ar Enter. Rediģē uzdevumu ar dubultklikšķi.</p>
       </form>
 
+      <section class="stats-panel" aria-labelledby="statsTitle">
+        <h2 id="statsTitle">Statistika</h2>
+        <div class="stats-grid">
+          <div class="stat-card total"><strong id="statsTotal">0</strong><span>Kopā</span></div>
+          <div class="stat-card done"><strong id="statsDone">0</strong><span>Izpildīti</span></div>
+          <div class="stat-card overdue"><strong id="statsOverdue">0</strong><span>Nokavēti</span></div>
+        </div>
+        <div class="progress-heading"><span>Izpildes progress</span><strong id="progressValue">0%</strong></div>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill" role="progressbar" aria-label="Izpildes progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+        </div>
+      </section>
+
       <div class="toolbar">
         <p class="counter"><span id="counter" aria-live="polite">Atlikuši 0 uzdevumi</span></p>
         <div class="action-buttons">
