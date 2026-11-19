@@ -36,11 +36,12 @@ function saveTasks() {
 }
 
 function addTask(rawText) {
-  // Sākotnējās versijas kļūda: tiek pārbaudīts saturs pirms trim().
-  if (!rawText) return;
+  // Neļauj pievienot tukšu vai tikai no atstarpēm veidotu ierakstu.
+  const text = rawText.trim();
+  if (!text) return;
   tasks.push({
     id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-    text: rawText,
+    text,
     completed: false
   });
   saveTasks();
