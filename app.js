@@ -11,6 +11,7 @@ const counter = document.getElementById("counter");
 const emptyState = document.getElementById("emptyState");
 const statusMessage = document.getElementById("statusMessage");
 const clearAllBtn = document.getElementById("clearAllBtn");
+const sortBtn = document.getElementById("sortBtn");
 const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
 
 let tasks = loadTasks();
@@ -205,6 +206,12 @@ function renderTasks() {
   renderStats();
 }
 
+function sortTasks() {
+  tasks.sort((a, b) => a.text.localeCompare(b.text, "lv", { sensitivity: "base" }));
+  saveTasks();
+  renderTasks();
+}
+
 taskForm.addEventListener("submit", event => {
   event.preventDefault();
   addTask(taskInput.value);
@@ -222,6 +229,7 @@ for (const button of filterButtons) {
   });
 }
 
+sortBtn.addEventListener("click", sortTasks);
 clearAllBtn.addEventListener("click", () => {
   tasks = [];
   try {
