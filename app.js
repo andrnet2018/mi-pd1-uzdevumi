@@ -118,7 +118,8 @@ function startEdit(id, textElement) {
 }
 
 function finishEdit(id, input, save) {
-  if (!input.isConnected) return;
+  if (!input.isConnected || input.dataset.finishing === "1") return;
+  input.dataset.finishing = "1"; // Neļauj blur atkārtoti izsaukt renderTasks.
   const task = tasks.find(item => item.id === id);
   if (save && task) {
     const text = input.value.trim();
