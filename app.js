@@ -64,6 +64,47 @@ function deleteTask(id) {
   renderTasks();
 }
 
+// Rediģēšana: dubultklikšķis atver ievadi tieši uzdevuma rindā.
+function startEdit(id, textElement) {
+  const task = tasks.find(item => item.id === id);
+  if (!task) return;
+
+  const editInput = document.createElement("input");
+  editInput.type = "text";
+  editInput.className = "edit-input";
+  editInput.value = task.text;
+  editInput.maxLength = 200;
+  editInput.setAttribute("aria-label", "Rediģēt uzdevumu");
+  textElement.replaceWith(editInput);
+
+  editInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      finishEdit(id, editInput, true);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      finishEdit(id, editInput, false);
+    }
+  });
+  // Noklikšķinot ārpus lauka, izmaiņas tiek atceltas.
+  editInput.addEventListener("blur", () => finishEdit(id, editInput, false));
+  editInput.focus();
+  editInput.select();
+}
+
+function finishEdit(id, editInput, save) {
+  if (!editInput.isConnected) return;
+  const task = tasks.find(item => item.id === id);
+  if (save && task) {
+    const newText = editInput.value.trim();
+    if (newText) {
+      task.text = newText;
+      saveTasks();
+    }
+  }
+  renderTasks();
+}
+
 function renderTasks() {
   taskList.replaceChildren();
   const visible = tasks.filter(task =>
@@ -92,6 +133,8 @@ function renderTasks() {
     const span = document.createElement("span");
     span.className = "task-text";
     span.textContent = task.text; // Lietotāja tekstu nekad neievieto kā HTML.
+    span.title = "Dubultklikšķis, lai rediģētu";
+    span.addEventListener("dblclick", () => startEdit(task.id, span));
 
     const remove = document.createElement("button");
     remove.type = "button";
