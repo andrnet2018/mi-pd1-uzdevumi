@@ -26,7 +26,7 @@ h1 { margin: 10px 0 8px; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.04
 .input-hint { margin: 10px 0 22px; font-size: .85rem; color: #74718a; }
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid #eaeaef; padding-top: 17px; }
 .counter { margin: 0; color: #605d78; }
-.counter strong { color: #282449; }
+.counter #counter { color: #282449; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 23px 0 16px; }
 .filter { border: 1px solid #e0def4; background: #fff; color: #625c82; padding: 9px 15px; border-radius: 999px; font-weight: 700; }
 .filter:hover { background: #f3f1fd; }
