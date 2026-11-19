@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>Mani uzdevumi — PD1</title>
+  <title>Mani uzdevumi — PD2</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <main class="app-shell">
     <header class="hero">
-      <p class="eyebrow">PD1 · Pirmā lietotne ar MI</p>
+      <p class="eyebrow">PD2 · Lietotnes paplašināšana ar MI</p>
       <h1>Mani uzdevumi</h1>
       <p class="intro">Pieraksti ieceres, atzīmē paveikto un turpini arī bez interneta.</p>
     </header>
@@ -21,6 +21,8 @@
         <label for="task-input">Jauns uzdevums</label>
         <div class="input-row">
           <input id="task-input" name="task" type="text" autocomplete="off" maxlength="200" placeholder="Jauns uzdevums...">
+          <label class="sr-only" for="due-input">Uzdevuma termiņš</label>
+          <input id="due-input" name="due" type="date" aria-label="Uzdevuma termiņš (neobligāts)">
           <button id="add-btn" class="button primary" type="submit">Pievienot</button>
         </div>
         <p class="input-hint">Pievieno ar Enter. Rediģē uzdevumu ar dubultklikšķi.</p>
@@ -28,7 +30,9 @@
 
       <div class="toolbar">
         <p class="counter"><span id="counter" aria-live="polite">Atlikuši 0 uzdevumi</span></p>
-        <button id="clearAllBtn" class="button subtle" type="button">Notīrīt visu</button>
+        <div class="action-buttons">
+          <button id="clearAllBtn" class="button subtle" type="button">Notīrīt visu</button>
+        </div>
       </div>
 
       <div class="filters" role="group" aria-label="Uzdevumu filtri">

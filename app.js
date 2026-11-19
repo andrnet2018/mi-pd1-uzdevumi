@@ -1,8 +1,10 @@
 "use strict";
 
-// Datu forma: { id: number, text: string, done: boolean }.
+// PD1 un PD2 lieto vienu un to pasu localStorage atslēgu.
+// PD2 dati: { id: number, text: string, done: boolean, due?: string | null }.
 const STORAGE_KEY = "pd1-uzdevumi";
 const taskInput = document.getElementById("task-input");
+const dueInput = document.getElementById("due-input");
 const taskForm = document.getElementById("taskForm");
 const taskList = document.getElementById("task-list");
 const counter = document.getElementById("counter");
@@ -14,13 +16,19 @@ const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
 let tasks = loadTasks();
 let currentFilter = "all";
 
-// Ielādē tikai pareizas formas uzdevumus no pārlūka atmiņas.
+function isValidDue(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === value;
+}
+
 function loadTasks() {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     if (!Array.isArray(data)) return [];
     return data.filter(item => item && Number.isSafeInteger(item.id) &&
-      typeof item.text === "string" && typeof item.done === "boolean");
+      typeof item.text === "string" && typeof item.done === "boolean")
+      .map(item => ({ ...item, due: isValidDue(item.due) ? item.due : null }));
   } catch (error) {
     console.warn("Saglabātos uzdevumus nevarēja nolasīt:", error);
     return [];
@@ -36,19 +44,38 @@ function saveTasks() {
   }
 }
 
-// Date.now() dublikāta gadījumā palielinām ID par vienu.
 function newTaskId() {
   let id = Date.now();
   while (tasks.some(task => task.id === id)) id += 1;
   return id;
 }
 
+function todayISO() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function isOverdue(task) {
+  return !task.done && isValidDue(task.due) && task.due < todayISO();
+}
+
+function formatDue(value) {
+  if (!isValidDue(value)) return "";
+  const [year, month, day] = value.split("-");
+  return `${day}.${month}.${year}`;
+}
+
 function addTask(rawText) {
   const text = rawText.trim();
   if (!text) return;
-  tasks.push({ id: newTaskId(), text, done: false });
+  const due = isValidDue(dueInput.value) ? dueInput.value : null;
+  tasks.push({ id: newTaskId(), text, done: false, due });
   saveTasks();
   taskInput.value = "";
+  dueInput.value = "";
   renderTasks();
   taskInput.focus();
 }
@@ -67,7 +94,6 @@ function deleteTask(id) {
   renderTasks();
 }
 
-// Papildfunkcija A: dubultklikšķis atver rediģēšanas lauku.
 function startEdit(id, textElement) {
   const task = tasks.find(item => item.id === id);
   if (!task) return;
@@ -108,9 +134,20 @@ function getVisibleTasks() {
     (currentFilter === "completed" && task.done));
 }
 
+function createDueBadge(task) {
+  const due = document.createElement("span");
+  due.className = "due-badge";
+  const overdue = isOverdue(task);
+  if (overdue) due.classList.add("is-overdue");
+  due.textContent = overdue
+    ? `Nokavēts · ${formatDue(task.due)}` : `Termiņš: ${formatDue(task.due)}`;
+  return due;
+}
+
 function createTaskRow(task) {
   const li = document.createElement("li");
   li.className = `task-row${task.done ? " is-completed" : ""}`;
+  if (isOverdue(task)) li.classList.add("task-overdue");
   li.dataset.taskId = String(task.id);
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -118,19 +155,28 @@ function createTaskRow(task) {
   checkbox.checked = task.done;
   checkbox.setAttribute("aria-label", `Atzīmēt: ${task.text}`);
   checkbox.addEventListener("change", () => toggleTask(task.id));
-  const label = document.createElement("span");
-  label.className = "task-text";
-  label.textContent = task.text; // Drošs teksts, nevis HTML.
-  label.title = "Dubultklikšķis, lai rediģētu";
-  label.addEventListener("dblclick", () => startEdit(task.id, label));
+  const content = createTaskContent(task);
   const remove = document.createElement("button");
   remove.type = "button";
   remove.className = "delete-button";
   remove.textContent = "Dzēst";
   remove.setAttribute("aria-label", `Dzēst: ${task.text}`);
   remove.addEventListener("click", () => deleteTask(task.id));
-  li.append(checkbox, label, remove);
+  li.append(checkbox, content, remove);
   return li;
+}
+
+function createTaskContent(task) {
+  const content = document.createElement("div");
+  content.className = "task-content";
+  const label = document.createElement("span");
+  label.className = "task-text";
+  label.textContent = task.text;
+  label.title = "Dubultklikšķis, lai rediģētu";
+  label.addEventListener("dblclick", () => startEdit(task.id, label));
+  content.append(label);
+  if (isValidDue(task.due)) content.append(createDueBadge(task));
+  return content;
 }
 
 function renderTasks() {
