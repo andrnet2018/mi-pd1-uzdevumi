@@ -1,5 +1,9 @@
 # Uzdevuma apraksts
 
+**MI rīks un modelis:** ChatGPT (GPT-6).
+
+**Avots:** PD1 demonstrācijas video transkripcija, 2026-11-19.
+
 ## Loma
 Tu esi HTML, CSS un JavaScript izstrādātājs un pasniedzējs iesācējam.
 
